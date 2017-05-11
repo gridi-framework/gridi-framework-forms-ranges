@@ -34,8 +34,8 @@ input[type="range"] {
         margin-top: -(($range-thumb-size - $range-track-height) / 2);
         border: $range-thumb-border;
         background: $range-thumb-background;
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
+        -webkit-border-radius: $range-thumb-border-radius;
+        border-radius: $range-thumb-border-radius;
         -webkit-appearance: none;
         appearance: none;
 
@@ -47,8 +47,8 @@ input[type="range"] {
         width: $range-thumb-size;
         border: $range-thumb-border;
         background: $range-thumb-background;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
+        -moz-border-radius: $range-thumb-border-radius;
+        border-radius: $range-thumb-border-radius;
         -moz-appearance: none;
         appearance: none;
     }
@@ -59,8 +59,8 @@ input[type="range"] {
         width: $range-thumb-size;
         border: $range-thumb-border;
         background: $range-thumb-background;
-        -ms-border-radius: 50%;
-        border-radius: 50%;
+        -ms-border-radius: $range-thumb-border-radius;
+        border-radius: $range-thumb-border-radius;
         -ms-appearance: none;
         appearance: none;
     }
