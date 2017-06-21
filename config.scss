@@ -1,8 +1,34 @@
+$range-margin-top: 0 !default;
+$range-margin-bottom: 0 !default;
+$range-margin-left: 0 !default;
+$range-margin-right: 0 !default;
+//Defined margins for each screens.
+$range-margin-for-screens: () !default;
+/*$range-margin-for-screens: (
+    s1: (
+        top: 20px, //Not required. Define only the margins values you want to change. Example - s2: ( top: 20px ) - change only top margin for screens greater than s2
+        bottom: 20px,
+        left: 20px,
+        right: 20px,
+    ),
+    ...
+) !default;*/
+
+//Thumb
 $range-thumb-size: 20px !default;
 $range-thumb-border: 1px solid get-color(grey, 400) !default;
+$range-thumb-focus-border-color: get-color(grey, 400) !default;
 $range-thumb-background: get-color(white) !default;
+$range-thumb-focus-background: get-color(white) !default;
 $range-thumb-border-radius: 50% !default;
 
+$range-thumb-disabled-border-color: get-color(grey, 300) !default;
+$range-thumb-disabled-background: get-color(white) !default;
+
+//Track
 $range-track-height: 8px !default;
 $range-track-background: get-color(grey, 400) !default;
 $range-focus-track-background: $primary-color !default;
+$range-track-border-radius: 0 !default;
+
+$range-track-disabled-background: get-color(grey, 300) !default;

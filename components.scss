@@ -1,20 +1,29 @@
 input[type="range"] {
     display: block;
     width: 100%;
-    margin: 0;
+    @include include-element-margin($range-margin-top, $range-margin-bottom, $range-margin-left, $range-margin-right, $range-margin-for-screens);
     border: 0;
     outline: 0;
+    background: transparent;
     padding: 0;
     @include appearance(none);
+    @include box-shadow(none);
 
-    &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
+    &::-moz-focus-inner {
+        margin: 0;
+        outline: 0;
+        border: 0;
+        padding: 0;
     }
 
     &:focus {
         border: 0;
         outline: 0;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
     }
 
     &::-ms-track {
@@ -26,7 +35,6 @@ input[type="range"] {
     }
 
     //Range thumb
-
     &::-webkit-slider-thumb {
         cursor: pointer;
         height: $range-thumb-size;
@@ -41,6 +49,11 @@ input[type="range"] {
 
     }
 
+    &:focus::-webkit-slider-thumb {
+        border-color: $range-thumb-focus-border-color;
+        background: $range-thumb-focus-background;
+    }
+
     &::-moz-range-thumb {
         cursor: pointer;
         height: $range-thumb-size;
@@ -51,6 +64,11 @@ input[type="range"] {
         border-radius: $range-thumb-border-radius;
         -moz-appearance: none;
         appearance: none;
+    }
+
+    &:focus::-moz-range-thumb {
+        border-color: $range-thumb-focus-border-color;
+        background: $range-thumb-focus-background;
     }
 
     &::-ms-thumb {
@@ -65,6 +83,11 @@ input[type="range"] {
         appearance: none;
     }
 
+    &:focus::-ms-thumb {
+        border-color: $range-thumb-focus-border-color;
+        background: $range-thumb-focus-background;
+    }
+
     //Range track
     &::-webkit-slider-runnable-track {
         cursor: pointer;
@@ -72,6 +95,8 @@ input[type="range"] {
         height: $range-track-height;
         background: $range-track-background;
         border: 0;
+        -webkit-border-radius: $range-track-border-radius;
+        border-radius: $range-track-border-radius;
     }
 
     &:focus::-webkit-slider-runnable-track {
@@ -84,6 +109,8 @@ input[type="range"] {
         height: $range-track-height;
         background: $range-track-background;
         border: 0;
+        -moz-border-radius: $range-track-border-radius;
+        border-radius: $range-track-border-radius;
     }
 
     &:focus::-moz-range-track {
@@ -97,6 +124,8 @@ input[type="range"] {
         background: transparent;
         border: 0;
         color: transparent;
+        -ms-border-radius: $range-track-border-radius;
+        border-radius: $range-track-border-radius;
     }
 
     &::-ms-fill-lower {
@@ -115,5 +144,54 @@ input[type="range"] {
 
     &:focus::-ms-fill-upper {
         background: $range-focus-track-background;
+    }
+
+    //Disabled
+    &[disabled] {
+        cursor: default;
+
+        //Range thumb
+        &::-webkit-slider-thumb {
+            cursor: default;
+            border-color: $range-thumb-disabled-border-color;
+            background: $range-thumb-disabled-background;
+        }
+
+        &::-moz-range-thumb {
+            cursor: default;
+            border-color: $range-thumb-disabled-border-color;
+            background: $range-thumb-disabled-background;
+        }
+
+        &::-ms-thumb {
+            cursor: default;
+            border-color: $range-thumb-disabled-border-color;
+            background: $range-thumb-disabled-background;
+        }
+
+        //Range track
+        &::-webkit-slider-runnable-track {
+            cursor: default;
+        }
+
+        &::-moz-range-track {
+            cursor: default;
+        }
+
+        &::-ms-track {
+            cursor: default;
+        }
+
+        &::-webkit-slider-runnable-track {
+            background: $range-track-disabled-background;
+        }
+
+        &::-moz-range-track {
+            background: $range-track-disabled-background;
+        }
+
+        &::-ms-track {
+            background: $range-track-disabled-background;
+        }
     }
 }
