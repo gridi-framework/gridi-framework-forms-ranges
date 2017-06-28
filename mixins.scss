@@ -1,81 +1,121 @@
-@mixin include-range-colors($thumb-border-color: null, $thumb-background: null, $track-background: null, $track-focus-background: null) {
+@mixin include-range-colors($colors-map) {
     //Range thumb
-    @if $thumb-border-color {
-        &::-webkit-slider-thumb {
-            border-color: $thumb-border-color;
+    &::-webkit-slider-thumb {
+        @if map-has-key($colors-map, thumb-border-color) and map-get($colors-map, thumb-border-color) {
+            border-color: map-get($colors-map, thumb-border-color);
         }
-
-        &::-moz-range-thumb {
-            border-color: $thumb-border-color;
-        }
-
-        &::-ms-thumb {
-            border-color: $thumb-border-color;
+        @if map-has-key($colors-map, thumb-background) and map-get($colors-map, thumb-background) {
+            background: map-get($colors-map, thumb-background);
         }
     }
 
-    @if $thumb-background {
-        &::-webkit-slider-thumb {
-            background: $thumb-background;
+    &::-moz-range-thumb {
+        @if map-has-key($colors-map, thumb-border-color) and map-get($colors-map, thumb-border-color) {
+            border-color: map-get($colors-map, thumb-border-color);
         }
-
-        &::-moz-range-thumb {
-            background: $thumb-background;
+        @if map-has-key($colors-map, thumb-background) and map-get($colors-map, thumb-background) {
+            background: map-get($colors-map, thumb-background);
         }
+    }
 
-        &::-ms-thumb {
-            background: $thumb-background;
+    &::-ms-thumb {
+        @if map-has-key($colors-map, thumb-border-color) and map-get($colors-map, thumb-border-color) {
+            border-color: map-get($colors-map, thumb-border-color);
+        }
+        @if map-has-key($colors-map, thumb-background) and map-get($colors-map, thumb-background) {
+            background: map-get($colors-map, thumb-background);
         }
     }
 
     //Range track
-    @if $track-background {
+    &::-webkit-slider-runnable-track {
+        @if map-has-key($colors-map, track-background) and map-get($colors-map, track-background) {
+            background: map-get($colors-map, track-background);
+        }
+    }
+
+    &::-moz-range-track {
+        @if map-has-key($colors-map, track-background) and map-get($colors-map, track-background) {
+            background: map-get($colors-map, track-background);
+        }
+    }
+
+    &::-ms-fill-lower {
+        @if map-has-key($colors-map, track-background) and map-get($colors-map, track-background) {
+            background: map-get($colors-map, track-background);
+        }
+    }
+
+    &::-ms-fill-upper {
+        @if map-has-key($colors-map, track-background) and map-get($colors-map, track-background) {
+            background: map-get($colors-map, track-background);
+        }
+    }
+
+    &:focus {
+        //Range thumb
+        &::-webkit-slider-thumb {
+            @if map-has-key($colors-map, focus-thumb-border-color) and map-get($colors-map, focus-thumb-border-color) {
+                border-color: map-get($colors-map, focus-thumb-border-color);
+            }
+            @if map-has-key($colors-map, focus-thumb-background) and map-get($colors-map, focus-thumb-background) {
+                background: map-get($colors-map, focus-thumb-background);
+            }
+        }
+
+        &::-moz-range-thumb {
+            @if map-has-key($colors-map, focus-thumb-border-color) and map-get($colors-map, focus-thumb-border-color) {
+                border-color: map-get($colors-map, focus-thumb-border-color);
+            }
+            @if map-has-key($colors-map, focus-thumb-background) and map-get($colors-map, focus-thumb-background) {
+                background: map-get($colors-map, focus-thumb-background);
+            }
+        }
+
+        &::-ms-thumb {
+            @if map-has-key($colors-map, focus-thumb-border-color) and map-get($colors-map, focus-thumb-border-color) {
+                border-color: map-get($colors-map, focus-thumb-border-color);
+            }
+            @if map-has-key($colors-map, focus-thumb-background) and map-get($colors-map, focus-thumb-background) {
+                background: map-get($colors-map, focus-thumb-background);
+            }
+        }
+
+        //Range track
         &::-webkit-slider-runnable-track {
-            background: $track-background;
+            @if map-has-key($colors-map, focus-track-background) and map-get($colors-map, focus-track-background) {
+                background: map-get($colors-map, focus-track-background);
+            }
         }
 
         &::-moz-range-track {
-            background: $track-background;
+            @if map-has-key($colors-map, focus-track-background) and map-get($colors-map, focus-track-background) {
+                background: map-get($colors-map, focus-track-background);
+            }
         }
 
         &::-ms-fill-lower {
-            background: $track-background;
+            @if map-has-key($colors-map, focus-track-background) and map-get($colors-map, focus-track-background) {
+                background: map-get($colors-map, focus-track-background);
+            }
         }
 
         &::-ms-fill-upper {
-            background: $track-background;
-        }
-    }
-
-    @if $track-focus-background {
-        &:focus {
-            &::-webkit-slider-runnable-track {
-                background: $track-focus-background;
-            }
-
-            &::-moz-range-track {
-                background: $track-focus-background;
-            }
-
-            &::-ms-fill-lower {
-                background: $track-focus-background;
-            }
-
-            &::-ms-fill-upper {
-                background: $track-focus-background;
+            @if map-has-key($colors-map, focus-track-background) and map-get($colors-map, focus-track-background) {
+                background: map-get($colors-map, focus-track-background);
             }
         }
     }
 }
 
-@mixin range-colors($thumb-border-color: null, $thumb-background: null, $track-background: null, $track-focus-background: null) {
+@mixin range-colors($colors-map) {
     input[type="range"] {
-        @include include-range-colors($thumb-border-color, $thumb-background, $track-background, $track-focus-background);
+        @include include-range-colors($colors-map);
     }
 }
 
-@mixin class-range-colors($class, $thumb-border-color: null, $thumb-background: null, $track-background: null, $track-focus-background: null) {
+@mixin class-range-colors($class, $colors-map) {
     input[type="range"].#{$class} {
-        @include include-range-colors($thumb-border-color, $thumb-background, $track-background, $track-focus-background);
+        @include include-range-colors($colors-map);
     }
 }
