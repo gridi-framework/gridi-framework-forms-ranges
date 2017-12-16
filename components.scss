@@ -1,15 +1,54 @@
 input[type="range"] {
-    display: block;
-    width: 100%;
-    @include include-element-margin($range-margin-top, $range-margin-bottom, $range-margin-left, $range-margin-right, $range-margin-for-screens);
-    border: 0;
-    outline: 0;
-    background: transparent;
-    padding: 0;
-    @include appearance(none);
-    @include box-shadow(none);
+    cursor: default;
+    display: $range-display;
+    width: $range-width;
+    @if $range-thumb-height > $range-track-height {
+        height: $range-thumb-height;
+    } @else {
+        height: $range-track-height;
+    }
+    @include margin-shorthand-with-screens-support((
+        top: $range-margin-top,
+        bottom: $range-margin-bottom,
+        left: $range-margin-left,
+        right: $range-margin-right
+    ), $range-margin-for-screens);
+    @include outline-shorthand((
+        width: $range-outline-width,
+        style: $range-outline-style,
+        color: $range-outline-color,
+        make-shorthand: true
+    ));
+    @include border-shorthand(map-merge((
+        border: (
+            width: $range-border-width,
+            style: $range-border-style,
+            color: $range-border-color,
+            make-shorthand: true
+        )
+    ), $range-borders));
+    @include background-shorthand((
+        image: $range-background-image,
+        position: $range-background-position,
+        repeat: $range-background-repeat,
+        color: $range-background-color,
+        attachment: $range-background-attachment,
+        make-shorthand: true
+    ));
+    @include padding-shorthand((
+        top: $range-padding-top,
+        bottom: $range-padding-bottom,
+        left: $range-padding-left,
+        right: $range-padding-right
+    ));
+    @include appearance($range-appearance);
+    @include box-shadow($range-box-shadow);
+    @if mixin-exists(range-extra-style) {
+        @include range-extra-style();
+    }
 
-    &::-moz-focus-inner {
+    &::-moz-focus-inner,
+    &::-moz-focus-outer {
         margin: 0;
         outline: 0;
         border: 0;
@@ -17,181 +56,454 @@ input[type="range"] {
     }
 
     &:focus {
-        border: 0;
-        outline: 0;
-    }
-
-    &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-    }
-
-    &::-ms-track {
-        cursor: pointer;
-        width: 100%;
-        border-color: transparent;
-        background: transparent;
-        color: transparent;
+        @include outline-shorthand((
+            width: $range-focus-outline-width,
+            style: $range-focus-outline-style,
+            color: $range-focus-outline-color,
+            make-shorthand: $range-focus-outline-make-shorthand
+        ));
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-focus-border-width,
+                style: $range-focus-border-style,
+                color: $range-focus-border-color,
+                make-shorthand: $range-focus-border-make-shorthand
+            )
+        ), $range-borders));
+        @if mixin-exists(range-focus-extra-style) {
+            @include range-focus-extra-style();
+        }
     }
 
     //Range thumb
     &::-webkit-slider-thumb {
-        cursor: pointer;
-        height: $range-thumb-size;
-        width: $range-thumb-size;
-        margin-top: -(($range-thumb-size - $range-track-height) / 2);
-        border: $range-thumb-border;
-        background: $range-thumb-background;
-        -webkit-border-radius: $range-thumb-border-radius;
-        border-radius: $range-thumb-border-radius;
-        -webkit-appearance: none;
-        appearance: none;
-
+        cursor: $range-thumb-cursor;
+        width: $range-thumb-width;
+        height: $range-thumb-height;
+        margin-top: -(($range-thumb-height - $range-track-height) / 2);
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-thumb-border-width,
+                style: $range-thumb-border-style,
+                color: $range-thumb-border-color,
+                make-shorthand: true
+            )
+        ), $range-thumb-borders));
+        @include background-shorthand((
+            image: $range-thumb-background-image,
+            position: $range-thumb-background-position,
+            repeat: $range-thumb-background-repeat,
+            color: $range-thumb-background-color,
+            attachment: $range-thumb-background-attachment,
+            make-shorthand: true
+        ));
+        @include border-radius($range-thumb-border-radius, (browsers-prefixes: webkit));
+        @include appearance($range-thumb-appearance, (browsers-prefixes: webkit));
+        @if mixin-exists(range-thumb-extra-style) {
+            @include range-thumb-extra-style(webkit);
+        }
     }
 
     &:focus::-webkit-slider-thumb {
-        border-color: $range-thumb-focus-border-color;
-        background: $range-thumb-focus-background;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-focus-thumb-border-width,
+                style: $range-focus-thumb-border-style,
+                color: $range-focus-thumb-border-color,
+                make-shorthand: $range-focus-thumb-border-make-shorthand
+            )
+        ), $range-focus-thumb-borders));
+        @include background-shorthand((
+            image: $range-focus-thumb-background-image,
+            position: $range-focus-thumb-background-position,
+            repeat: $range-focus-thumb-background-repeat,
+            color: $range-focus-thumb-background-color,
+            attachment: $range-focus-thumb-background-attachment,
+            make-shorthand: $range-focus-thumb-background-make-shorthand
+        ));
+        @if mixin-exists(range-focus-thumb-extra-style) {
+            @include range-focus-thumb-extra-style(webkit);
+        }
+    }
+
+    &[disabled]::-webkit-slider-thumb {
+        cursor: $range-disabled-thumb-cursor;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-disabled-thumb-border-width,
+                style: $range-disabled-thumb-border-style,
+                color: $range-disabled-thumb-border-color,
+                make-shorthand: $range-disabled-thumb-border-make-shorthand
+            )
+        ), $range-disabled-thumb-borders));
+        @include background-shorthand((
+            image: $range-disabled-thumb-background-image,
+            position: $range-disabled-thumb-background-position,
+            repeat: $range-disabled-thumb-background-repeat,
+            color: $range-disabled-thumb-background-color,
+            attachment: $range-disabled-thumb-background-attachment,
+            make-shorthand: $range-disabled-thumb-background-make-shorthand
+        ));
+        @if mixin-exists(range-disabled-thumb-extra-style) {
+            @include range-disabled-thumb-extra-style(webkit);
+        }
     }
 
     &::-moz-range-thumb {
-        cursor: pointer;
-        height: $range-thumb-size;
-        width: $range-thumb-size;
-        border: $range-thumb-border;
-        background: $range-thumb-background;
-        -moz-border-radius: $range-thumb-border-radius;
-        border-radius: $range-thumb-border-radius;
-        -moz-appearance: none;
-        appearance: none;
+        cursor: $range-thumb-cursor;
+        width: $range-thumb-width;
+        height: $range-thumb-height;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-thumb-border-width,
+                style: $range-thumb-border-style,
+                color: $range-thumb-border-color,
+                make-shorthand: true
+            )
+        ), $range-thumb-borders));
+        @include background-shorthand((
+            image: $range-thumb-background-image,
+            position: $range-thumb-background-position,
+            repeat: $range-thumb-background-repeat,
+            color: $range-thumb-background-color,
+            attachment: $range-thumb-background-attachment,
+            make-shorthand: true
+        ));
+        @include border-radius($range-thumb-border-radius, (browsers-prefixes: moz));
+        @include appearance($range-thumb-appearance, (browsers-prefixes: moz));
+        @if mixin-exists(range-thumb-extra-style) {
+            @include range-thumb-extra-style(moz);
+        }
     }
 
     &:focus::-moz-range-thumb {
-        border-color: $range-thumb-focus-border-color;
-        background: $range-thumb-focus-background;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-focus-thumb-border-width,
+                style: $range-focus-thumb-border-style,
+                color: $range-focus-thumb-border-color,
+                make-shorthand: $range-focus-thumb-border-make-shorthand
+            )
+        ), $range-focus-thumb-borders));
+        @include background-shorthand((
+            image: $range-focus-thumb-background-image,
+            position: $range-focus-thumb-background-position,
+            repeat: $range-focus-thumb-background-repeat,
+            color: $range-focus-thumb-background-color,
+            attachment: $range-focus-thumb-background-attachment,
+            make-shorthand: $range-focus-thumb-background-make-shorthand
+        ));
+        @if mixin-exists(range-focus-thumb-extra-style) {
+            @include range-focus-thumb-extra-style(moz);
+        }
+    }
+
+    &[disabled]::-moz-range-thumb {
+        cursor: $range-disabled-thumb-cursor;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-disabled-thumb-border-width,
+                style: $range-disabled-thumb-border-style,
+                color: $range-disabled-thumb-border-color,
+                make-shorthand: $range-disabled-thumb-border-make-shorthand
+            )
+        ), $range-disabled-thumb-borders));
+        @include background-shorthand((
+            image: $range-disabled-thumb-background-image,
+            position: $range-disabled-thumb-background-position,
+            repeat: $range-disabled-thumb-background-repeat,
+            color: $range-disabled-thumb-background-color,
+            attachment: $range-disabled-thumb-background-attachment,
+            make-shorthand: $range-disabled-thumb-background-make-shorthand
+        ));
+        @if mixin-exists(range-disabled-thumb-extra-style) {
+            @include range-disabled-thumb-extra-style(moz);
+        }
     }
 
     &::-ms-thumb {
-        cursor: pointer;
-        height: $range-thumb-size;
-        width: $range-thumb-size;
-        border: $range-thumb-border;
-        background: $range-thumb-background;
-        -ms-border-radius: $range-thumb-border-radius;
-        border-radius: $range-thumb-border-radius;
-        -ms-appearance: none;
-        appearance: none;
+        @include box-sizing(border-box, (browsers-prefixes: ms));
+        cursor: $range-thumb-cursor;
+        width: $range-thumb-width;
+        height: $range-thumb-height;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-thumb-border-width,
+                style: $range-thumb-border-style,
+                color: $range-thumb-border-color,
+                make-shorthand: true
+            )
+        ), $range-thumb-borders));
+        @include background-shorthand((
+            image: $range-thumb-background-image,
+            position: $range-thumb-background-position,
+            repeat: $range-thumb-background-repeat,
+            color: $range-thumb-background-color,
+            attachment: $range-thumb-background-attachment,
+            make-shorthand: true
+        ));
+        @include border-radius($range-thumb-border-radius, (browsers-prefixes: ms));
+        @include appearance($range-thumb-appearance, (browsers-prefixes: ms));
+        @if mixin-exists(range-thumb-extra-style) {
+            @include range-thumb-extra-style(ms);
+        }
     }
 
     &:focus::-ms-thumb {
-        border-color: $range-thumb-focus-border-color;
-        background: $range-thumb-focus-background;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-focus-thumb-border-width,
+                style: $range-focus-thumb-border-style,
+                color: $range-focus-thumb-border-color,
+                make-shorthand: $range-focus-thumb-border-make-shorthand
+            )
+        ), $range-focus-thumb-borders));
+        @include background-shorthand((
+            image: $range-focus-thumb-background-image,
+            position: $range-focus-thumb-background-position,
+            repeat: $range-focus-thumb-background-repeat,
+            color: $range-focus-thumb-background-color,
+            attachment: $range-focus-thumb-background-attachment,
+            make-shorthand: $range-focus-thumb-background-make-shorthand
+        ));
+        @if mixin-exists(range-focus-thumb-extra-style) {
+            @include range-focus-thumb-extra-style(ms);
+        }
+    }
+
+    &[disabled]::-ms-thumb {
+        cursor: $range-disabled-thumb-cursor;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-disabled-thumb-border-width,
+                style: $range-disabled-thumb-border-style,
+                color: $range-disabled-thumb-border-color,
+                make-shorthand: $range-disabled-thumb-border-make-shorthand
+            )
+        ), $range-disabled-thumb-borders));
+        @include background-shorthand((
+            image: $range-disabled-thumb-background-image,
+            position: $range-disabled-thumb-background-position,
+            repeat: $range-disabled-thumb-background-repeat,
+            color: $range-disabled-thumb-background-color,
+            attachment: $range-disabled-thumb-background-attachment,
+            make-shorthand: $range-disabled-thumb-background-make-shorthand
+        ));
+        @if mixin-exists(range-disabled-thumb-extra-style) {
+            @include range-disabled-thumb-extra-style(ms);
+        }
     }
 
     //Range track
     &::-webkit-slider-runnable-track {
-        cursor: pointer;
-        width: 100%;
+        cursor: $range-track-cursor;
+        width: $range-track-width;
         height: $range-track-height;
-        background: $range-track-background;
-        border: 0;
-        -webkit-border-radius: $range-track-border-radius;
-        border-radius: $range-track-border-radius;
+        margin: (($range-thumb-height - $range-track-height) / 2) 0;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-track-border-width,
+                style: $range-track-border-style,
+                color: $range-track-border-color,
+                make-shorthand: true
+            )
+        ), $range-track-borders));
+        @include background-shorthand((
+            image: $range-track-background-image,
+            position: $range-track-background-position,
+            repeat: $range-track-background-repeat,
+            color: $range-track-background-color,
+            attachment: $range-track-background-attachment,
+            make-shorthand: true
+        ));
+        @include transition-shorthand((
+            property: $range-track-transition-property,
+            duration: $range-track-transition-duration,
+            timing-function: $range-track-transition-timing-function,
+            delay: $range-track-transition-delay,
+            make-shorthand: true,
+            css3-settings: (browsers-prefixes: webkit)
+        ));
+        @include border-radius($range-track-border-radius, (browsers-prefixes: webkit));
+        @if mixin-exists(range-track-extra-style) {
+            @include range-track-extra-style(webkit);
+        }
     }
 
+    &:active::-webkit-slider-runnable-track,
     &:focus::-webkit-slider-runnable-track {
-        background: $range-focus-track-background;
+        @include background-shorthand((
+            image: $range-focus-track-background-image,
+            position: $range-focus-track-background-position,
+            repeat: $range-focus-track-background-repeat,
+            color: $range-focus-track-background-color,
+            attachment: $range-focus-track-background-attachment,
+            make-shorthand: $range-focus-track-background-make-shorthand
+        ));
+        @if mixin-exists(range-focus-track-extra-style) {
+            @include range-focus-track-extra-style(webkit);
+        }
+    }
+
+    &[disabled]::-webkit-slider-runnable-track {
+        cursor: $range-disabled-track-cursor;
+        @include background-shorthand((
+            image: $range-disabled-track-background-image,
+            position: $range-disabled-track-background-position,
+            repeat: $range-disabled-track-background-repeat,
+            color: $range-disabled-track-background-color,
+            attachment: $range-disabled-track-background-attachment,
+            make-shorthand: $range-disabled-track-background-make-shorthand
+        ));
+        @if mixin-exists(range-disabled-track-extra-style) {
+            @include range-disabled-track-extra-style(webkit);
+        }
     }
 
     &::-moz-range-track {
-        cursor: pointer;
-        width: 100%;
+        cursor: $range-track-cursor;
+        width: $range-track-width;
         height: $range-track-height;
-        background: $range-track-background;
-        border: 0;
-        -moz-border-radius: $range-track-border-radius;
-        border-radius: $range-track-border-radius;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-track-border-width,
+                style: $range-track-border-style,
+                color: $range-track-border-color,
+                make-shorthand: true
+            )
+        ), $range-track-borders));
+        @include background-shorthand((
+            image: $range-track-background-image,
+            position: $range-track-background-position,
+            repeat: $range-track-background-repeat,
+            color: $range-track-background-color,
+            attachment: $range-track-background-attachment,
+            make-shorthand: true
+        ));
+        @include transition-shorthand((
+            property: $range-track-transition-property,
+            duration: $range-track-transition-duration,
+            timing-function: $range-track-transition-timing-function,
+            delay: $range-track-transition-delay,
+            make-shorthand: true,
+            css3-settings: (browsers-prefixes: moz)
+        ));
+        @include border-radius($range-track-border-radius, (browsers-prefixes: moz));
+        @if mixin-exists(range-track-extra-style) {
+            @include range-track-extra-style(moz);
+        }
     }
 
+    &:active::-moz-range-track,
     &:focus::-moz-range-track {
-        background: $range-focus-track-background;
+        @include background-shorthand((
+            image: $range-focus-track-background-image,
+            position: $range-focus-track-background-position,
+            repeat: $range-focus-track-background-repeat,
+            color: $range-focus-track-background-color,
+            attachment: $range-focus-track-background-attachment,
+            make-shorthand: $range-focus-track-background-make-shorthand
+        ));
+        @if mixin-exists(range-focus-track-extra-style) {
+            @include range-focus-track-extra-style(moz);
+        }
+    }
+
+    &[disabled]::-moz-range-track{
+        cursor: $range-disabled-track-cursor;
+        @include background-shorthand((
+            image: $range-disabled-track-background-image,
+            position: $range-disabled-track-background-position,
+            repeat: $range-disabled-track-background-repeat,
+            color: $range-disabled-track-background-color,
+            attachment: $range-disabled-track-background-attachment,
+            make-shorthand: $range-disabled-track-background-make-shorthand
+        ));
+        @if mixin-exists(range-disabled-track-extra-style) {
+            @include range-disabled-track-extra-style(moz);
+        }
     }
 
     &::-ms-track {
-        cursor: pointer;
-        width: 100%;
+        cursor: $range-track-cursor;
+        width: $range-track-width;
         height: $range-track-height;
-        background: transparent;
-        border: 0;
+        @include border-shorthand(map-merge((
+            border: (
+                width: $range-track-border-width,
+                style: $range-track-border-style,
+                color: $range-track-border-color,
+                make-shorthand: true
+            )
+        ), $range-track-borders));
+        @include background-shorthand((
+            image: $range-track-background-image,
+            position: $range-track-background-position,
+            repeat: $range-track-background-repeat,
+            color: $range-track-background-color,
+            attachment: $range-track-background-attachment,
+            make-shorthand: true
+        ));
+        @include transition-shorthand((
+            property: $range-track-transition-property,
+            duration: $range-track-transition-duration,
+            timing-function: $range-track-transition-timing-function,
+            delay: $range-track-transition-delay,
+            make-shorthand: true,
+            css3-settings: (browsers-prefixes: ms)
+        ));
+        @include border-radius($range-track-border-radius, (browsers-prefixes: ms));
         color: transparent;
-        -ms-border-radius: $range-track-border-radius;
-        border-radius: $range-track-border-radius;
+        @if mixin-exists(range-track-extra-style) {
+            @include range-track-extra-style(ms);
+        }
+    }
+
+    &:active::-ms-track,
+    &:focus::-ms-track {
+        @include background-shorthand((
+            image: $range-focus-track-background-image,
+            position: $range-focus-track-background-position,
+            repeat: $range-focus-track-background-repeat,
+            color: $range-focus-track-background-color,
+            attachment: $range-focus-track-background-attachment,
+            make-shorthand: $range-focus-track-background-make-shorthand
+        ));
+        @if mixin-exists(range-focus-track-extra-style) {
+            @include range-focus-track-extra-style(ms);
+        }
+    }
+
+    &[disabled]::-ms-track {
+        cursor: $range-disabled-track-cursor;
+        @include background-shorthand((
+            image: $range-disabled-track-background-image,
+            position: $range-disabled-track-background-position,
+            repeat: $range-disabled-track-background-repeat,
+            color: $range-disabled-track-background-color,
+            attachment: $range-disabled-track-background-attachment,
+            make-shorthand: $range-disabled-track-background-make-shorthand
+        ));
+        @if mixin-exists(range-disabled-track-extra-style) {
+            @include range-disabled-track-extra-style(ms);
+        }
     }
 
     &::-ms-fill-lower {
-        background: $range-track-background;
+        background: transparent;
         border: 0;
     }
 
     &:focus::-ms-fill-lower {
-        background: $range-focus-track-background;
+        background: transparent;
     }
 
     &::-ms-fill-upper {
-        background: $range-track-background;
+        background: transparent;
         border: 0;
     }
 
     &:focus::-ms-fill-upper {
-        background: $range-focus-track-background;
-    }
-
-    //Disabled
-    &[disabled] {
-        cursor: default;
-
-        //Range thumb
-        &::-webkit-slider-thumb {
-            cursor: default;
-            border-color: $range-thumb-disabled-border-color;
-            background: $range-thumb-disabled-background;
-        }
-
-        &::-moz-range-thumb {
-            cursor: default;
-            border-color: $range-thumb-disabled-border-color;
-            background: $range-thumb-disabled-background;
-        }
-
-        &::-ms-thumb {
-            cursor: default;
-            border-color: $range-thumb-disabled-border-color;
-            background: $range-thumb-disabled-background;
-        }
-
-        //Range track
-        &::-webkit-slider-runnable-track {
-            cursor: default;
-        }
-
-        &::-moz-range-track {
-            cursor: default;
-        }
-
-        &::-ms-track {
-            cursor: default;
-        }
-
-        &::-webkit-slider-runnable-track {
-            background: $range-track-disabled-background;
-        }
-
-        &::-moz-range-track {
-            background: $range-track-disabled-background;
-        }
-
-        &::-ms-track {
-            background: $range-track-disabled-background;
-        }
+        background: transparent;
     }
 }

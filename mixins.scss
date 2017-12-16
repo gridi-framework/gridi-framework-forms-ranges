@@ -1,108 +1,170 @@
-@mixin include-range-colors($colors-map) {
-    //Range thumb
-    &::-webkit-slider-thumb {
-        @if map-has-key($colors-map, thumb-border-color) and map-get($colors-map, thumb-border-color) {
-            border-color: map-get($colors-map, thumb-border-color);
-        }
-        @if map-has-key($colors-map, thumb-background) and map-get($colors-map, thumb-background) {
-            background: map-get($colors-map, thumb-background);
-        }
-    }
+//@mixin range-extra-colors-propertys($colors-map) {} //Create this mixin before import module when you want add some special colors style for element
+//@mixin range-focus-extra-colors-propertys($colors-map) {} //Create this mixin before import module when you want add some special colors style for element
+//@mixin range-thumb-extra-colors-propertys($colors-map, $browser-prefix: null) {} //Create this mixin before import module when you want add some special colors style for element
+//@mixin range-focus-thumb-extra-colors-propertys($colors-map, $browser-prefix: null) {} //Create this mixin before import module when you want add some special colors style for element
+//@mixin range-disabled-thumb-extra-colors-propertys($colors-map, $browser-prefix: null) {} //Create this mixin before import module when you want add some special colors style for element
+//@mixin range-track-extra-colors-propertys($colors-map, $browser-prefix: null) {} //Create this mixin before import module when you want add some special colors style for element
+//@mixin range-focus-track-extra-colors-propertys($colors-map, $browser-prefix: null) {} //Create this mixin before import module when you want add some special colors style for element
+//@mixin range-disabled-track-extra-colors-propertys($colors-map, $browser-prefix: null) {} //Create this mixin before import module when you want add some special colors style for element
 
-    &::-moz-range-thumb {
-        @if map-has-key($colors-map, thumb-border-color) and map-get($colors-map, thumb-border-color) {
-            border-color: map-get($colors-map, thumb-border-color);
+@mixin range-colors-propertys($colors-map) {
+    @if is-map($colors-map) {
+        @include property-from-map($colors-map, outline-color);
+        @include property-from-map($colors-map, border-color);
+        @include property-from-map($colors-map, background-color);
+        @if mixin-exists(range-extra-colors-propertys) {
+            @include range-extra-colors-propertys($colors-map);
         }
-        @if map-has-key($colors-map, thumb-background) and map-get($colors-map, thumb-background) {
-            background: map-get($colors-map, thumb-background);
+        
+        //Focus
+        &:focus {
+            @include property-from-map($colors-map, outline-color, focus-outline-color);
+            @include property-from-map($colors-map, border-color, focus-border-color);
+            @if mixin-exists(range-focus-extra-colors-propertys) {
+                @include range-focus-extra-colors-propertys($colors-map);
+            }
         }
-    }
 
-    &::-ms-thumb {
-        @if map-has-key($colors-map, thumb-border-color) and map-get($colors-map, thumb-border-color) {
-            border-color: map-get($colors-map, thumb-border-color);
-        }
-        @if map-has-key($colors-map, thumb-background) and map-get($colors-map, thumb-background) {
-            background: map-get($colors-map, thumb-background);
-        }
-    }
-
-    //Range track
-    &::-webkit-slider-runnable-track {
-        @if map-has-key($colors-map, track-background) and map-get($colors-map, track-background) {
-            background: map-get($colors-map, track-background);
-        }
-    }
-
-    &::-moz-range-track {
-        @if map-has-key($colors-map, track-background) and map-get($colors-map, track-background) {
-            background: map-get($colors-map, track-background);
-        }
-    }
-
-    &::-ms-fill-lower {
-        @if map-has-key($colors-map, track-background) and map-get($colors-map, track-background) {
-            background: map-get($colors-map, track-background);
-        }
-    }
-
-    &::-ms-fill-upper {
-        @if map-has-key($colors-map, track-background) and map-get($colors-map, track-background) {
-            background: map-get($colors-map, track-background);
-        }
-    }
-
-    &:focus {
         //Range thumb
         &::-webkit-slider-thumb {
-            @if map-has-key($colors-map, focus-thumb-border-color) and map-get($colors-map, focus-thumb-border-color) {
-                border-color: map-get($colors-map, focus-thumb-border-color);
+            @include property-from-map($colors-map, border-color, thumb-border-color);
+            @include property-from-map($colors-map, background-color, thumb-background-color);
+            @if mixin-exists(range-thumb-extra-colors-propertys) {
+                @include range-thumb-extra-colors-propertys($colors-map, webkit);
             }
-            @if map-has-key($colors-map, focus-thumb-background) and map-get($colors-map, focus-thumb-background) {
-                background: map-get($colors-map, focus-thumb-background);
+        }
+
+        &:focus::-webkit-slider-thumb {
+            @include property-from-map($colors-map, border-color, focus-thumb-border-color);
+            @include property-from-map($colors-map, background-color, focus-thumb-background-color);
+            @if mixin-exists(range-focus-thumb-extra-colors-propertys) {
+                @include range-focus-thumb-extra-colors-propertys($colors-map, webkit);
+            }
+        }
+
+        &[disabled]::-webkit-slider-thumb {
+            @include property-from-map($colors-map, border-color, disabled-thumb-border-color);
+            @include property-from-map($colors-map, background-color, disabled-thumb-background-color);
+            @if mixin-exists(range-disabled-thumb-extra-colors-propertys) {
+                @include range-disabled-thumb-extra-colors-propertys($colors-map, webkit);
             }
         }
 
         &::-moz-range-thumb {
-            @if map-has-key($colors-map, focus-thumb-border-color) and map-get($colors-map, focus-thumb-border-color) {
-                border-color: map-get($colors-map, focus-thumb-border-color);
+            @include property-from-map($colors-map, border-color, thumb-border-color);
+            @include property-from-map($colors-map, background-color, thumb-background-color);
+            @if mixin-exists(range-thumb-extra-colors-propertys) {
+                @include range-thumb-extra-colors-propertys($colors-map, moz);
             }
-            @if map-has-key($colors-map, focus-thumb-background) and map-get($colors-map, focus-thumb-background) {
-                background: map-get($colors-map, focus-thumb-background);
+        }
+
+        &:focus::-moz-range-thumb {
+            @include property-from-map($colors-map, border-color, focus-thumb-border-color);
+            @include property-from-map($colors-map, background-color, focus-thumb-background-color);
+            @if mixin-exists(range-focus-thumb-extra-colors-propertys) {
+                @include range-focus-thumb-extra-colors-propertys($colors-map, moz);
+            }
+        }
+
+        &[disabled]::-moz-range-thumb {
+            @include property-from-map($colors-map, border-color, disabled-thumb-border-color);
+            @include property-from-map($colors-map, background-color, disabled-thumb-background-color);
+            @if mixin-exists(range-disabled-thumb-extra-colors-propertys) {
+                @include range-disabled-thumb-extra-colors-propertys($colors-map, moz);
             }
         }
 
         &::-ms-thumb {
-            @if map-has-key($colors-map, focus-thumb-border-color) and map-get($colors-map, focus-thumb-border-color) {
-                border-color: map-get($colors-map, focus-thumb-border-color);
+            @include property-from-map($colors-map, border-color, thumb-border-color);
+            @include property-from-map($colors-map, background-color, thumb-background-color);
+            @if mixin-exists(range-thumb-extra-colors-propertys) {
+                @include range-thumb-extra-colors-propertys($colors-map, ms);
             }
-            @if map-has-key($colors-map, focus-thumb-background) and map-get($colors-map, focus-thumb-background) {
-                background: map-get($colors-map, focus-thumb-background);
+        }
+
+        &:focus::-ms-thumb {
+            @include property-from-map($colors-map, border-color, focus-thumb-border-color);
+            @include property-from-map($colors-map, background-color, focus-thumb-background-color);
+            @if mixin-exists(range-focus-thumb-extra-colors-propertys) {
+                @include range-focus-thumb-extra-colors-propertys($colors-map, ms);
+            }
+        }
+
+        &[disabled]::-ms-thumb {
+            @include property-from-map($colors-map, border-color, disabled-thumb-border-color);
+            @include property-from-map($colors-map, background-color, disabled-thumb-background-color);
+            @if mixin-exists(range-disabled-thumb-extra-colors-propertys) {
+                @include range-disabled-thumb-extra-colors-propertys($colors-map, ms);
             }
         }
 
         //Range track
         &::-webkit-slider-runnable-track {
-            @if map-has-key($colors-map, focus-track-background) and map-get($colors-map, focus-track-background) {
-                background: map-get($colors-map, focus-track-background);
+            @include property-from-map($colors-map, border-color, track-border-color);
+            @include property-from-map($colors-map, background-color, track-background-color);
+            @if mixin-exists(range-track-extra-colors-propertys) {
+                @include range-track-extra-colors-propertys($colors-map, webkit);
+            }
+        }
+
+        &:active::-webkit-slider-runnable-track,
+        &:focus::-webkit-slider-runnable-track {
+            @include property-from-map($colors-map, background-color, focus-track-background-color);
+            @if mixin-exists(range-focus-track-extra-colors-propertys) {
+                @include range-focus-track-extra-colors-propertys($colors-map, webkit);
+            }
+        }
+
+        &[disabled]::-webkit-slider-runnable-track {
+            @include property-from-map($colors-map, background-color, disabled-track-background-color);
+            @if mixin-exists(range-disabled-track-extra-colors-propertys) {
+                @include range-disabled-track-extra-colors-propertys($colors-map, webkit);
             }
         }
 
         &::-moz-range-track {
-            @if map-has-key($colors-map, focus-track-background) and map-get($colors-map, focus-track-background) {
-                background: map-get($colors-map, focus-track-background);
+            @include property-from-map($colors-map, border-color, track-border-color);
+            @include property-from-map($colors-map, background-color, track-background-color);
+            @if mixin-exists(range-track-extra-colors-propertys) {
+                @include range-track-extra-colors-propertys($colors-map, moz);
             }
         }
 
-        &::-ms-fill-lower {
-            @if map-has-key($colors-map, focus-track-background) and map-get($colors-map, focus-track-background) {
-                background: map-get($colors-map, focus-track-background);
+        &:active::-moz-range-track,
+        &:focus::-moz-range-track {
+            @include property-from-map($colors-map, background-color, focus-track-background-color);
+            @if mixin-exists(range-focus-track-extra-colors-propertys) {
+                @include range-focus-track-extra-colors-propertys($colors-map, moz);
             }
         }
 
-        &::-ms-fill-upper {
-            @if map-has-key($colors-map, focus-track-background) and map-get($colors-map, focus-track-background) {
-                background: map-get($colors-map, focus-track-background);
+        &[disabled]::-moz-range-track {
+            @include property-from-map($colors-map, background-color, disabled-track-background-color);
+            @if mixin-exists(range-disabled-track-extra-colors-propertys) {
+                @include range-disabled-track-extra-colors-propertys($colors-map, moz);
+            }
+        }
+
+        &::-ms-track {
+            @include property-from-map($colors-map, border-color, track-border-color);
+            @include property-from-map($colors-map, background-color, track-background-color);
+            @if mixin-exists(range-track-extra-colors-propertys) {
+                @include range-track-extra-colors-propertys($colors-map, ms);
+            }
+        }
+
+        &:active::-ms-track,
+        &:focus::-ms-track {
+            @include property-from-map($colors-map, background-color, focus-track-background-color);
+            @if mixin-exists(range-focus-track-extra-colors-propertys) {
+                @include range-focus-track-extra-colors-propertys($colors-map, ms);
+            }
+        }
+
+        &[disabled]::-ms-track {
+            @include property-from-map($colors-map, background-color, disabled-track-background-color);
+            @if mixin-exists(range-disabled-track-extra-colors-propertys) {
+                @include range-disabled-track-extra-colors-propertys($colors-map, ms);
             }
         }
     }
@@ -110,12 +172,12 @@
 
 @mixin range-colors($colors-map) {
     input[type="range"] {
-        @include include-range-colors($colors-map);
+        @include range-colors-propertys($colors-map);
     }
 }
 
 @mixin class-range-colors($class, $colors-map) {
     input[type="range"].#{$class} {
-        @include include-range-colors($colors-map);
+        @include range-colors-propertys($colors-map);
     }
 }
